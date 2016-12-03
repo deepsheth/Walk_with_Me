@@ -70,42 +70,29 @@
 	<!-- Modal Structure -->
 	<div id="walk-info-modal" class="modal bottom-sheet">
 		<div class="modal-content">
-			<div class="row">
-				<div class="col s4">
-					<div class="walk-preview">
-						<img width="450" src="https://maps.googleapis.com/maps/api/staticmap?center=40.60476,-75.378174&zoom=15&size=450x300&markers=color:0x2196F3%7Clabel:S%7C40.60476,-75.378174&markers=color:0xE74C3C%7Clabel:D%7C40.60506,-75.387174&key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE">
-					</div>
-				</div>
-				<div class="col s8">
-					<div class="row">
-						<div class="col s4">
-							<p>Walk With</p>
-						</div>
-						<div class="col s4">
-							<p>Towards</p>
+			<div class="container">
+				<div class="row">
+					<div class="col s6">
+						<div class="walk-preview">
+							<img width="450" src="https://maps.googleapis.com/maps/api/staticmap?center=40.60476,-75.378174&zoom=15&size=450x300&markers=color:0x2196F3%7Clabel:S%7C40.60476,-75.378174&markers=color:0xE74C3C%7Clabel:D%7C40.60506,-75.387174&key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE" class="dyn_map">
 						</div>
 					</div>
-					<div class="row">
-						<div class="col s4">
-							<h3>Adam</h3>
-						</div>
-						<div class="col s4">
-							<h3>Rauch</h3>
-						</div>
-						<div class="col s4">
-							<div class="large-avatar-wrapper">
-								
+					<div class="col s6 center">
+						<div class="row">
+							<div class="col s8">
+								<p><strong>Someone will be walking to</strong></p>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col s4">
-							<div class="avatar-wrapper">
-								
+						<div class="row">
+							<div class="col s8">
+								<h3 class="dyn_location">Rauch</h3>
 							</div>
+							
 						</div>
-						<div class="col s4">
-							<button class="btn btn-flat green white-text">Meet Up</button>
+						<div class="row">
+							<div class="col s8">
+								<button class="btn btn-large green waves-effect waves-light btn-large white-text">Walk With</button>
+							</div>
 						</div>
 					</div>
 				</div>
