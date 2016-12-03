@@ -58,3 +58,117 @@ nav a {
 .bg-primary {
 	background: #17455C !important;
 }
+
+
+
+
+/* --- Profile Page Styles --- */
+#personal_info {
+	height: 300px;
+	text-align: center;
+	background-color: #424242;
+}
+
+#user_picture {
+	text-align: right;
+}
+
+#user_picture img {
+	border-radius: 50%;
+	height: 165px;
+	margin-top: 100px;
+}
+
+#name_walks_wrapper {
+	margin-top: 130px;
+	text-align: left;
+	color: white;
+	font-size: 2.5rem;
+}
+
+#user_walks {
+	font-size: 1.3rem;
+	color: darkgray;
+}
+
+
+#past_walks_title {
+	text-align: center;
+}
+
+#map {
+	height: 425px;
+}
+
+#list {
+	height: 425px;
+	background-color: lightgray;
+	overflow: hidden;
+}
+
+
+#walk-card {
+	height: 40px;
+	overflow: hidden;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 20px;
+}
+
+#walk-info {
+	line-height: 40px;
+	text-align: center;
+}
+
+.walk-partner {
+}
+
+.walk-partner-image {
+	margin-bottom: -20px;
+}
+
+.walk-partner-image img {
+	height: 40px;
+	border-radius: 50%;
+	margin-bottom: -12px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.walk-destination {
+}
+
+
+.walk-info-small {
+	font-style: italic;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 0 !important;
+}
+
+#user_name, #user_picture {
+	cursor: pointer;
+}
+
+#edit-name {
+	display: none;
+	padding-left: 3px;
+}
+
+#edit-profile-picture {
+	display: none;
+}
+
+#user_name:hover #edit-name {
+	display: inline-block;
+}
+
+#user_picture img:hover ~ #edit-profile-picture {
+	display: inline-block;
+	margin-left: -24px;
+}
+
+
+
+
+
