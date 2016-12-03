@@ -64,9 +64,9 @@
 	<div id="chatter-info" class="collection">
 		<span id="chatter-image"><img id="chatter-image-file" src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c"></span><span id="chatter-name"></span><span id="more-options"><a class='dropdown-button btn' href='#' data-activates='dropdown1'><i class="material-icons">settings</i></a></span>
 		<ul id='dropdown1' class='dropdown-content'>
-	    <li><a href="#!">Report</a></li>
+	    <li><a onClick="reportUser()">Report</a></li>
 	    <li class="divider"></li>
-	    <li><a href="#!">Block</a></li>
+	    <li><a onClick="blockUser()">Block</a></li>
   </ul>
 	</div>
 	<div class="container">
@@ -91,7 +91,6 @@
 var user = firebase.auth().currentUser;
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-
 	var walkID = getUrlParameter('w');
 	if (!walkID){
 		$('a.back').click(function(){
@@ -114,7 +113,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 		        var newMessageKey = firebase.database().ref('chats/'+walkID).push().key;
 
 		        firebase.database().ref('chats/'+walkID+'/'+newMessageKey).set(messageData);
-		        $('#send-message').val() = '';
+		        $('#send-message').val('');
+		        var d = $('#messages');
+				d.scrollTop(d.prop("scrollHeight"));
 		     }
 		});
 	});
@@ -124,10 +125,29 @@ firebase.auth().onAuthStateChanged(function(user) {
 		d.scrollTop(d.prop("scrollHeight"));
 		console.log(walkData);
 		var responder_name = walkData['responder_name'];
-		console.log(responder_name);
-		$('#chatter-name').text(responder_name);
+		var responder_id = walkData['responder_id'];
+		var poster_name = walkData['poster_name'];
 
-		get_user_data(walkData['responder_id'],function(userData){
+		if (user.uid == responder_id){
+			$('#chatter-name').text(poster_name);
+			/*var isBlockedRef = firebase.database().ref('blocked/'+user.uid+'/'+poster_id).once('value').then(function(snapshot){
+				$('a.back').click(function(){
+					parent.history.back();
+					return false;
+				})
+			});*/
+		}
+		else{
+			$('#chatter-name').text(responder_name);
+			/*var isBlockedRef = firebase.database().ref('blocked/'+user.uid+'/'+responder_id).once('value').then(function(snapshot){
+				$('a.back').click(function(){
+					parent.history.back();
+					return false;
+				})
+			});*/
+		}
+
+		get_user_data(walkData['poster_id'],function(userData){
 			$('#chatter-image-file').attr('src',userData['profile_picture']);
 		});
 	});
@@ -143,11 +163,31 @@ firebase.auth().onAuthStateChanged(function(user) {
 			//sent from walking partner, place on left
 			$('#message-collection').append('<li class="collection-item avatar responder"><span class="title">'+snapshot.val().text+'</span></li>');
 		}
+		var d = $('#messages');
+		d.scrollTop(d.prop("scrollHeight"));
 	});
 
   }
   else{
   	window.location.replace('/index.html');
+  }
+
+  function reportUser(){
+  	if (user.uid == responder_id){
+		firebase.database().ref('reported/'+poster_id+'/'+user.uid).set(true);
+	}
+	else{
+		firebase.database().ref('reported/'+responder_id+'/'+user.uid).set(true);
+	}
+  }
+
+  function reportUser(){
+  	if (user.uid == responder_id){
+		firebase.database().ref('reported/'+poster_id+'/'+user.uid).set(true);
+	}
+	else{
+		firebase.database().ref('reported/'+responder_id+'/'+user.uid).set(true);
+	}
   }
 
 });
