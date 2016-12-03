@@ -56,7 +56,7 @@
 				</div></li>
 				<li><a href="profile.html"><i class="material-icons">history</i>Past Walks</a></li>
 				<li><a href="login.html"><i class="material-icons">account_circle</i>Log In</a></li>
-				<li><div class="divider"></div></li> 
+				<li><div class="divider"></div></li>
 				<li><a href=""><i class="material-icons"></i>Log Out</a></li>
 			</ul>
 			<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -64,5 +64,51 @@
 	</nav>
 	<div class="map-container">
 		<div id="map"></div>
+	</div>
+	<!-- Modal Trigger -->
+	<a class="waves-effect waves-light btn" href="#walk-info-modal">Modal</a>
+	<!-- Modal Structure -->
+	<div id="walk-info-modal" class="modal bottom-sheet">
+		<div class="modal-content">
+			<div class="row">
+				<div class="col s4">
+					<div class="walk-preview">
+						<img width="450" src="https://maps.googleapis.com/maps/api/staticmap?center=40.60476,-75.378174&zoom=15&size=450x300&markers=color:0x2196F3%7Clabel:S%7C40.60476,-75.378174&markers=color:0xE74C3C%7Clabel:D%7C40.60506,-75.387174&key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE">
+					</div>
+				</div>
+				<div class="col s8">
+					<div class="row">
+						<div class="col s4">
+							<p>Walk With</p>
+						</div>
+						<div class="col s4">
+							<p>Towards</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s4">
+							<h3>Adam</h3>
+						</div>
+						<div class="col s4">
+							<h3>Rauch</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s4">
+							<div class="avatar-wrapper">
+								
+							</div>
+						</div>
+						<div class="col s4">
+							<button class="btn btn-flat green white-text">Meet Up</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="modal-footer">
+			<a href="" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+		</div>
 	</div>
 </body>
