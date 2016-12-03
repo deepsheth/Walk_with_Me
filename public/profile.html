@@ -63,7 +63,7 @@
 	<div id="personal_info">
 		<div class="container">
 			<div class="row">
-				<div id="user_picture" class="col s6"><image id="user-profile-picture-image" src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c"><i id="edit-profile-picture" class="material-icons" style="color:white;">mode_edit</i></div>
+				<div id="user_picture" class="col s6"><div id="user-profile-picture-image"></div><i id="edit-profile-picture" class="material-icons" style="color:white;">mode_edit</i></div>
 				<div id="name_walks_wrapper" class="col s6">
 					<input value="" id="user_name_field" type="text" class="validate" style="display:none;">
       <label id="user_name_label" class="active" for="user_name_field" style="display:none;">Enter Name...</label><div id="user_name"><i id="edit-name" class="material-icons">mode_edit</i></div>
@@ -159,7 +159,7 @@
 			//pull the image url, and for example I put it into the display_pro_pic div
 			uploadRef.getDownloadURL().then(function(url){
 				console.log(url);
-				$('#user-profile-picture-image').attr('src',url);
+				$('#user-profile-picture-image').css('background-image', 'url(' + url + ')');
 			}).catch(function(error) {
 				console.log("User has not uploaded image yet.");
 			});
@@ -271,12 +271,12 @@
 		uploadRef.put(selectedFile).then(function(snapshot) {
 			console.log('Profile Picture Uploaded');
 		});
-		$('#user-profile-picture-image').attr('src','https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c');
+		$('#user-profile-picture-image').css('background-image', 'url(https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c)');
 		setTimeout(function(){
 			var uploadRef = imagesRef.child(userID+'.png');
 			uploadRef.getDownloadURL().then(function(url){
 			console.log(url);
-			$('#user-profile-picture-image').attr('src',url);
+			$('#user-profile-picture-image').css('background-image', 'url(' + url + ')');
 			});
 		}, 500);
 	});
