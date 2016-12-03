@@ -34,8 +34,8 @@ body {
 #messages {
 	height: 70%;
 	overflow: auto;
-	border-top: 1px black solid;
-    border-bottom: 1px black solid;
+	border-top: 1px #7d7d7d solid;
+    border-bottom: 1px #7d7d7d solid;
 }
 
 .collection .collection-item.avatar {

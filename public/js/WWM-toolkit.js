@@ -93,7 +93,7 @@ function get_walk_data(walkID, type, user,after){
 	}
 	else if(type == 'past'){
 		console.log(walkID);
-		firebase.database().ref('/past_walks/' + walkID).once('value').then(function(snapshot) {
+		firebase.database().ref('past_walks/' + walkID).once('value').then(function(snapshot) {
 			walkData['poster_id'] = snapshot.val().poster_id;
 			walkData['responder_id'] = snapshot.val().responder_id;
 			walkData['responder_name'] = snapshot.val().responder_name;

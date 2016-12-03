@@ -40,7 +40,6 @@
 			<a href="#!" class="brand-logo">Walk with Me</a>
 			<ul class="right hide-on-med-and-down">
 				<li><a href="past.html">Past Walks</a></li>
-				<li><a href="login.html">Log In</a></li>
 				<li><a href="!#">Log Out</a></li>
 			</ul>
 			
@@ -54,7 +53,6 @@
 					<a href="#!email"><span class="white-text email">deepsheth@lehigh.com</span></a>
 				</div></li>
 				<li><a href="past.html"><i class="material-icons">history</i>Past Walks</a></li>
-				<li><a href="login.html"><i class="material-icons">account_circle</i>Log In</a></li>
 				<li><div class="divider"></div></li>
 				<li><a href="!#"><i class="material-icons"></i>Log Out</a></li>
 			</ul>
@@ -62,6 +60,7 @@
 		</div>
 	</nav>
 	<div id="chatter-info" class="collection">
+		<span id="back-button" style="float:left;margin-left:10px;"><a>Back</a></span>
 		<span id="chatter-image"><img id="chatter-image-file" src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c"></span><span id="chatter-name"></span><span id="more-options"><a class='dropdown-button btn' href='#' data-activates='dropdown1'><i class="material-icons">settings</i></a></span>
 		<ul id='dropdown1' class='dropdown-content'>
 	    <li><a onClick="reportUser()">Report</a></li>
@@ -98,6 +97,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 			return false;
 		})
 	}
+
+	$('#back-button a').attr('href','/walk_info.html?w='+walkID);
 
 	get_user_data(null,function(userData){
 		var user_name = userData['name'];

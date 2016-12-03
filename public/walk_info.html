@@ -27,7 +27,7 @@
 	<!-- JS -->
 	<!-- Compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	
+	<script type="text/javascript" src="/js/WWM-toolkit.js"></script>
 	<script type="text/javascript" src="/js/script_details.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE&callback=initMiniMap"
 	async defer></script>
@@ -70,14 +70,14 @@
 						<div class="dyn_avatar">
 							<i class="material-icons tiny-icon circle green tiny white-text walk-icon">directions_walk</i>
 						</div>
-						Walk with <span class="dyn_username">[name]</span> to <span class="dyn_dest">[dest]</span>
+						Walk with <span class="dyn_username"></span> to <span class="dyn_dest"></span>
 						</h3>
 					
 					</div>
 				</div>
 				<div class="row">
 					<div class="col s12 center">
-						<h5><span class="dyn_time"><strong>December 12th, 2016</strong> at 10:45pm</span></h5>
+						<h5><strong><span class="dyn_date"></span></strong> at <span class="dyn_time"></span></h5>
 					</div>
 				</div>
 				<div class="row center">
@@ -91,8 +91,8 @@
 				</div>
 				<div class="row center">
 					<div class="col s12">
-						<a class="btn btn-large green white-text btn-flat" href="" class="dyn_chat">
-						<i class="material-icons left">message</i>View Messages with <span class="dyn_username">Adam</span>
+						<a class="btn btn-large green white-text btn-flat dyn_chat">
+						<i class="material-icons left">message</i>View Messages with <span class="dyn_username"></span>
 						</a>
 					</div>
 				</div>
@@ -106,20 +106,62 @@
 	
 
 	$(document).ready(function() {
+		firebase.auth().onAuthStateChanged(function(user) {
+  			if (user) {
+				var walkID = getUrlParameter('w');
+				if (!walkID){
+					$('a.back').click(function(){
+						parent.history.back();
+						return false;
+					})
+				}
+				console.log(walkID);
+				var start_location = [];
+				var end_location = [];
+				get_walk_data(walkID,"past",user,function(walkData){
+					start_location = [walkData['start_latitude'],walkData['start_longitude']];
+					end_location = [walkData['end_latitude'],walkData['end_longitude']];
+					if (walkData['poster_id'] == user.uid){
+						$('.dyn_username').html(walkData['responder_name']);
+						console.log('/chat.html?w='+walkID);
+						$('.dyn_chat').attr('href','/chat.html?w='+walkID);
+						$('.dyn_dest').html(walkData['destination_name']);
 
-		var ref = firebase.database().ref('/past_walks/' + walk_id).once('value').then(function(snapshot) {
-			renderPage(snapshot.val());
+						var time = new Date(walkData['time']);
+						var date_string = time.toString().substring(4,15);
+						var time_string = time.toString().substring(15,21);
+						$('.dyn_date').html(date_string);
+						$('.dyn_time').html(time_string);
+					}
+					else{
+						$('.dyn_username').html(walkData['poster_name']);
+						console.log('/chat.html?w='+walkID);
+						$('.dyn_chat').attr('href','/chat.html?w='+walkID);
+						$('.dyn_dest').html(walkData['destination_name']);
+
+						var time = new Date(walkData['time']);
+						var date_string = time.toString().substring(4,14);
+						var time_string = time.toString().substring(15,20);
+						$('.dyn_date').html(date_string);
+						$('.dyn_time').html(time_string);
+					}
+				})
+			}
 		});
+
+		/*var ref = firebase.database().ref('/past_walks/' + walk_id).once('value').then(function(snapshot) {
+			renderPage(snapshot.val());
+		});*/
 	});
 
 	
-	function renderPage(snap) {
+	/*function renderPage(snap) {
 		$('.dyn_username').text(snap.poster_name);
 		$('.dyn_dest').text(snap.destination_name);
 		$('.dyn_time').text(snap.time);
 		$('.dyn_chat').text("/chat.html?w=" + snap.walk_id);
 
-	}
+	}*/
 	</script>
 	
 </div>
