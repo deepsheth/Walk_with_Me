@@ -1,6 +1,5 @@
 function log_in(email, password) {
 
-
 	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 		var error_message = "<div class='row'><div class='col s8 offset-s2'><strong class='red-text'>" + error.message + "</strong></div></div>";
 		$('#log_in_panel').before(error_message);
@@ -57,10 +56,12 @@ $(document).ready( function() {
 
 	// In case homepage is loaded, redirects to app
 	var stop_authStateListener = firebase.auth().onAuthStateChanged(function(user) {
-		if (user) {
-			window.location.href = "/app.html";
-		} else {
-		// No user is signed in.
+		if (window.location.pathname == "/") {
+			if (user) {
+				window.location.href = "/app.html";
+			} else {
+			// No user is signed in.
+	  		}
   		}
 	});
 

@@ -41,7 +41,7 @@
 				<li><a href="login.html">Log In</a></li>
 				<li><a href="!#">Log Out</a></li>
 			</ul>
-			
+
 			<ul id="slide-out" class="side-nav">
 				<li><div class="userView">
 					<div class="background">
@@ -145,37 +145,44 @@
 	</div>
 
 	<script>
+
+	firebase.auth().onAuthStateChanged(function(user) {
+		
+		if (user) {
+			var user = firebase.auth().currentUser;
+			var userID = user.uid;
+			console.log(userID);
+		}
+
+		firebase.database().ref('users/'+userID).once('value').then(function(snapshot){
+			console.log(snapshot.val());
+			var name = snapshot.val().name;
+			var numWalks = snapshot.val().number_of_walks;
+			$('#user_name').html(name+'<i id="edit-name" class="material-icons">mode_edit</i>');
+			$('#user_walks').html(numWalks+" walks");
+		});
+
+		var storage = firebase.storage();
+		var storageRef = storage.ref();
+
+		//create reference to the location in the database
+		var imagesRef = storageRef.child('profile_pictures');
+
+		// Get the user id to use as the unique filename for their profile picture
+		var uploadRef = imagesRef.child(userID+'.png');
+
+		//pull the image url, and for example I put it into the display_pro_pic div
+		uploadRef.getDownloadURL().then(function(url){
+			console.log(url);
+			$('#user-profile-picture-image').attr('src',url);
+		}).catch(function(error) {
+			console.log("User has not uploaded image yet.");
+		});
+	});
+
 	
 
-	var user = firebase.auth().currentUser;
-
-	if (!user){
-		firebase.auth().signInWithEmailAndPassword('ark218@lehigh.edu', 'aq1sw2de').catch(function(error) {alert(error)});
-		var user = firebase.auth().currentUser;
-	}
-	var userID = user.uid;
-	console.log(userID);
-
-	firebase.database().ref('users/'+userID).once('value').then(function(snapshot){
-		var name = snapshot.val().name;
-		var numWalks = snapshot.val().number_of_walks;
-		$('#user_name').html(name+'<i id="edit-name" class="material-icons">mode_edit</i>');
-		$('#user_walks').html(numWalks+" walks");
-	});
-	var storage = firebase.storage();
-	var storageRef = storage.ref();
-
-	//create reference to the location in the database
-	var imagesRef = storageRef.child('profile_pictures');
-
-	// Get the user id to use as the unique filename for their profile picture
-	var uploadRef = imagesRef.child(userID+'.png');
-
-	//pull the image url, and for example I put it into the display_pro_pic div
-	uploadRef.getDownloadURL().then(function(url){
-		console.log(url);
-		$('#user-profile-picture-image').attr('src',url);
-	});
+	
 	</script>
 
 

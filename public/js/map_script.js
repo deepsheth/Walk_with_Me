@@ -48,14 +48,7 @@ function initMap() {
 	      lng: position.coords.longitude
 	    };
 
-	    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-        var beachMarker = new google.maps.Marker({
-          position: {lat: -33.890, lng: 151.274},
-          map: map,
-          icon: image
-        });
-
-        addMarker(map, pos, icon);
+        addMarker(map, pos, "current_location");
 
 	    map.setCenter(pos);
 	  }, function() {
@@ -72,10 +65,20 @@ function initMap() {
 	}
 
 function addMarker (map, pos, icon) {
+	var baseMarkerURL = "/img/marker/";
+	var marker_icon;
+
+	if (icon != null) {
+		marker_icon = baseMarkerURL + icon + ".png";
+	}
+	else {
+		marker_icon = baseMarkerURL + "default.png";
+	}
+
 	var beachMarker = new google.maps.Marker({
-		position: {lat: -33.890, lng: 151.274},
+		position: pos,
 		map: map,
-		icon: image
+		icon: marker_icon
     });
 
 }

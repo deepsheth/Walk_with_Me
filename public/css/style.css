@@ -97,7 +97,11 @@ nav a {
 }
 
 #map {
-	height: 425px;
+	height: 100%;
+}
+
+#map-container {
+	height: 93vh;
 }
 
 #list {
