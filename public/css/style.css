@@ -89,25 +89,24 @@ nav a {
 #list {
 	height: 425px;
 	background-color: lightgray;
+	overflow: hidden;
 }
 
 
 #walk-card {
-	height: 75px;
+	height: 40px;
 	overflow: hidden;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 20px;
 }
 
 #walk-info {
-	line-height: 75px;
-	font-style: italic;
+	line-height: 40px;
 	text-align: center;
 }
 
 .walk-partner {
-	font-weight: bold;
-	font-size: 17px;
-	font-style: normal;
-	margin-left: 1px;
 }
 
 .walk-partner-image {
@@ -123,16 +122,39 @@ nav a {
 }
 
 .walk-destination {
-	font-style: normal;
-	font-weight: bold;
-	font-size: 17px;
-	margin-left: 1px;
 }
 
-.walk-date {
-	height: 75px;
-	line-height: 75px;
+
+.walk-info-small {
+	font-style: italic;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 0 !important;
 }
+
+#user_name, #user_picture {
+	cursor: pointer;
+}
+
+#edit-name {
+	display: none;
+	padding-left: 3px;
+}
+
+#edit-profile-picture {
+	display: none;
+}
+
+#user_name:hover #edit-name {
+	display: inline-block;
+}
+
+#user_picture img:hover ~ #edit-profile-picture {
+	display: inline-block;
+	margin-left: -24px;
+}
+
+
 
 
 

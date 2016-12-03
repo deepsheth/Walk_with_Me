@@ -68,7 +68,7 @@ $(document).ready( function() {
 		
 	}
 	else {
-		alert("User is logged in.");
+		console.log("User is logged in.");
 	}
 
 	$("btn_log_in").click(function() {
