@@ -65,7 +65,8 @@
 			<div class="row">
 				<div id="user_picture" class="col s6"><image id="user-profile-picture-image" src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c"><i id="edit-profile-picture" class="material-icons" style="color:white;">mode_edit</i></div>
 				<div id="name_walks_wrapper" class="col s6">
-					<div id="user_name"><i id="edit-name" class="material-icons">mode_edit</i></div>
+					<input value="" id="user_name_field" type="text" class="validate" style="display:none;">
+      <label id="user_name_label" class="active" for="user_name_field" style="display:none;">Enter Name...</label><div id="user_name"><i id="edit-name" class="material-icons">mode_edit</i></div>
 					<div id="user_walks"></div>
 				</div>
 			</div>
@@ -143,6 +144,7 @@
 				var name = snapshot.val().name;
 				var numWalks = snapshot.val().number_of_walks;
 				$('#user_name').html(name+'<i id="edit-name" class="material-icons">mode_edit</i>');
+				$('#user_name_field').attr('value',name);
 				$('#user_walks').html(numWalks+" walks");
 			}, function(error) {
 				console.log(error.message);
@@ -160,13 +162,34 @@
 			}).catch(function(error) {
 				console.log("User has not uploaded image yet.");
 			});
+			$('#user_name').click(function(){
+				$('#user_name').hide();
+				$('#user_name_field').show();
+				$('#user_name_label').show();
+			});
+
+			$("#user_name_field").keypress(function(event) {
+			    if (event.which == 13 && $('#user_name_field').val() != '' && $('#user_name_field').val().length > 3) {
+			    	var newName = $('#user_name_field').val();
+			        firebase.database().ref('users/'+user.uid+'/name').set(newName);
+			        $('#user_name').html(newName+'<i id="edit-name" class="material-icons">mode_edit</i>');
+			        $('#user_name').show();
+					$('#user_name_field').hide();
+					$('#user_name_label').hide();
+			     }
+			});
+			$(document).keyup(function(event){
+				if (event.keyCode === 27){
+					$('#user_name').show();
+					$('#user_name_field').hide();
+					$('#user_name_label').hide();
+				}
+			});
 		}
 	});
-<<<<<<< HEAD
 
-	$('#user_picture').click(function(){
+	$('#user_picture img').click(function(){
 		console.log('clicked user pic');
-		$('#user-profile-picture-image').attr('src','https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c');
 		
 		$('#pro-pic-upload').click();
 	});
@@ -186,7 +209,7 @@
 		uploadRef.put(selectedFile).then(function(snapshot) {
 			console.log('Profile Picture Uploaded');
 		});
-
+		$('#user-profile-picture-image').attr('src','https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c');
 		setTimeout(function(){
 			var uploadRef = imagesRef.child(userID+'.png');
 			uploadRef.getDownloadURL().then(function(url){
@@ -194,12 +217,8 @@
 			$('#user-profile-picture-image').attr('src',url);
 			});
 		}, 500);
-		
 	});
 
-=======
-	
->>>>>>> 558e343e14929d2b354024b4d90833eef5887acc
 	
 	</script>
 </div>

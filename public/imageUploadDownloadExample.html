@@ -91,19 +91,19 @@ $('#reload').click(function(){
 
 function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
 	var firebaseRef = firebase.database().ref();
-	var geoFire = new GeoFire(firebaseRef.child('posted_walks_geofire'));
+	var geoFire = new GeoFire(firebaseRef);
 
 	var data = {}
 	data["poster_id"] = user_id;
-	data["start_latitude"] = start_lat;
-	data["start_longitude"] = start_lon;
-	data["end_latitude"] = end_lat;
-	data["end_longitude"] = end_lon;
+	data["start_lat"] = start_lat;
+	data["start_lon"] = start_lon;
+	data["end_lat"] = end_lat;
+	data["end_lon"] = end_lon;
 	data["destination_name"] = destination_name;
 	data["time"] = new Date().getTime();
 
-	var walk_id = firebaseRef.child('posted_walks').push().getKey();
-	firebaseRef.child("posted_walks").child(walk_id).set(data);
+	var walk_id = firebaseRef.push().getKey();
+	firebaseRef.child("posted_walks_geofire").child(walk_id).set(data);
 
 	geoFire.set(walk_id, [start_lat,start_lon]);
 	return true;
