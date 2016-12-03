@@ -107,10 +107,10 @@ function addHoverMarkerStart(latitude,longitude, type) {
 	}
 
 	return new google.maps.Marker({
-	    	position: pos,
-			icon: mkr,
-			title: "null",
-			map: map
+    	position: pos,
+		icon: mkr,
+		title: "null",
+		map: map
 	});
 }
 

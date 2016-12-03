@@ -89,13 +89,23 @@ function addMarker (map, pos, icon, key) {
 
 	// key should only be null for current location marker
 	if (key == null) {
-		marker_icon = baseMarkerURL + "current_location.png";
-		new google.maps.Marker({
+
+		var mkr = {
+	          path: 'm12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z',
+	          scale: 1.75,
+	          fillColor: '#0769AD',
+	          fillOpacity: .85,
+	          strokeColor: '#004A7C',
+	          strokeWeight: 5
+	    };
+
+			new google.maps.Marker({
 	    	position: pos,
-			icon: marker_icon,
+			icon: mkr,
 			title: "null",
 			map: map
-		});
+			});
+
 
 		return;	
 	}
