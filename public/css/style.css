@@ -127,6 +127,7 @@ nav a {
 	padding: .5em 0;
 	vertical-align: middle;
 	margin-bottom: .5em;
+	min-width: 388px;
 }
 
 #walk-cards-title {
@@ -174,7 +175,7 @@ nav a {
 	padding: 0 !important;
 }
 
-#user_name, #user_picture {
+#user_name, #user_picture img {
 	cursor: pointer;
 }
 
@@ -196,7 +197,14 @@ nav a {
 	margin-left: -24px;
 }
 
+#user_name_field {
+	font-size: 2.5rem;
+}
 
-
+#user_name_label {
+	font-size: 1rem;
+	top: -85px;
+	position: relative;
+}
 
 
