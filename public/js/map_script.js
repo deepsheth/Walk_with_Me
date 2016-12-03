@@ -78,7 +78,12 @@ function initMap() {
 	}
 
 function addMarker (map, pos, icon, key) {
-
+	console.log('-----');
+	console.log(map);
+	console.log(pos);
+	console.log(icon);
+	console.log(key);
+	console.log('-----');
 	var baseMarkerURL = "/img/marker/";
 	var marker_icon;
 
@@ -96,7 +101,7 @@ function addMarker (map, pos, icon, key) {
 	}
 
 	var walkData = {};
-	firebase.database().ref('/posted_walks_test/' + key).once('value').then(function(snapshot) {
+	firebase.database().ref('posted_walks_test/' + key).once('value').then(function(snapshot) {
 		console.log(snapshot.val());
 		walkData['poster_id'] = snapshot.val().poster_id;
 		walkData['start_latitude'] = snapshot.val().start_latitude;
@@ -106,7 +111,7 @@ function addMarker (map, pos, icon, key) {
 		walkData['destination_name'] = snapshot.val().destination_name;
 		walkData['time'] = snapshot.val().time;
 
-		var angle = getAngle(walk_data["start_latitude"], walk_data["start_longitude"], walk_data["end_latitude"], walk_data["end_longitude"]);
+		var angle = getAngle(walkData["start_latitude"], walkData["start_longitude"], walkData["end_latitude"], walkData["end_longitude"]);
 		console.log("angle: " + angle);
 
 	 	var angled_marker = {
@@ -127,8 +132,14 @@ function addMarker (map, pos, icon, key) {
 		});
 
 		map_marker.addListener('click', function() {
-			var walk_info = get_walk_data(key, "posted");
-			display_walk_info(walk_info);
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					get_walk_data(key, "posted",user,function(walk_info){
+						display_walk_info(walk_info);
+					});
+				}
+			});
+			
 	    });
 		});
 
@@ -220,7 +231,7 @@ function get_posted_walks(latitude, longitude){
 
 //pass it the walk id and the type of walk
 //type of walk would be 'posted', 'current', or 'past'
-function get_walk_data(walkID, type){
+function get_walk_data(walkID, type, user,after){
 	var acceptableTypes = ['posted','current','past'];
 	if (!acceptableTypes.includes(type)){
 		console.log("incorrect walk type, must be 'posted', 'current', or 'past'");
@@ -237,7 +248,7 @@ function get_walk_data(walkID, type){
 	var walkData = {};
 
 	if(type == 'posted'){
-		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+		firebase.database().ref('/posted_walks_test/' + walkID).once('value').then(function(snapshot) {
 			walkData['poster_id'] = snapshot.val().poster_id;
 			walkData['start_latitude'] = snapshot.val().start_latitude;
 			walkData['start_longitude'] = snapshot.val().start_longitude;
@@ -245,42 +256,43 @@ function get_walk_data(walkID, type){
 			walkData['end_longitude'] = snapshot.val().end_longitude;
 			walkData['destination_name'] = snapshot.val().destination_name;
 			walkData['time'] = snapshot.val().time;
+			after(walkData);
 		});
 	}
 	else if(type == 'current'){
-		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+		firebase.database().ref('/current_walks/' + walkID).once('value').then(function(snapshot) {
 			walkData['poster_id'] = snapshot.val().poster_id;
 			walkData['responder_id'] = snapshot.val().responder_id;
 			walkData['responder_name'] = snapshot.val().responder_name;
 			walkData['responder_num_walks'] = snapshot.val().responder_num_walks;
 			walkData['responder_location'] = snapshot.val().responder_location;
-			walkData['chat_id'] = snapshot.val().chat_id;
 			walkData['start_latitude'] = snapshot.val().start_latitude;
 			walkData['start_longitude'] = snapshot.val().start_longitude;
 			walkData['end_latitude'] = snapshot.val().end_latitude;
 			walkData['end_longitude'] = snapshot.val().end_longitude;
 			walkData['destination_name'] = snapshot.val().destination_name;
 			walkData['time'] = snapshot.val().time;
+			after(walkData);
 		});
 	}
 	else if(type == 'past'){
-		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+		console.log(walkID);
+		firebase.database().ref('/past_walks/' + walkID).once('value').then(function(snapshot) {
 			walkData['poster_id'] = snapshot.val().poster_id;
 			walkData['responder_id'] = snapshot.val().responder_id;
 			walkData['responder_name'] = snapshot.val().responder_name;
 			walkData['responder_num_walks'] = snapshot.val().responder_num_walks;
 			walkData['responder_location'] = snapshot.val().responder_location;
-			walkData['chat_id'] = snapshot.val().chat_id;
 			walkData['start_latitude'] = snapshot.val().start_latitude;
 			walkData['start_longitude'] = snapshot.val().start_longitude;
 			walkData['end_latitude'] = snapshot.val().end_latitude;
 			walkData['end_longitude'] = snapshot.val().end_longitude;
 			walkData['destination_name'] = snapshot.val().destination_name;
 			walkData['time'] = snapshot.val().time;
+			after(walkData);
 		});
 	}
 
-	return walkData;
 }
 
 function display_walk_info(walk_info) {

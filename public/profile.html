@@ -27,7 +27,7 @@
 	<!-- JS -->
 	<!-- Compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	
+	<script type="text/javascript" src="/js/WWM-toolkit.js"></script>
 	<script type="text/javascript" src="/js/script.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE&callback=initMiniMap"
 	async defer></script>
@@ -85,7 +85,7 @@
 					<div id="walk-cards-title" class="row center grey-text grey lighten-3">
 						<span id="walked-with" class="col s4">walked with</span><span id="walked-to" class="col s4">to</span><span id="walked-date" class="col s4">on</span>
 					</div>
-					<div id="walk-card" class="row hoverable">
+					<!--<div id="walk-card" class="row hoverable">
 						<div id="walk-info">
 							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
@@ -124,7 +124,7 @@
 						<div id="walk-info">
 							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</div>
@@ -185,6 +185,33 @@
 					$('#user_name_label').hide();
 				}
 			});
+
+			var locations = [];
+			var walkHistoryRef = firebase.database().ref('walk_history/'+user.uid);
+			walkHistoryRef.on('child_added',function(snapshot){
+				get_walk_data(snapshot.getKey(),'past',user,function(walkData){
+					var date = new Date(walkData['time']);
+					var date_string = date.toString()
+					var date_string = date_string.substring(4,10);
+
+					console.log(walkData);
+
+					locations.push({
+						'start_latitude': walkData['start_latitude'],
+						'start_longitude': walkData['start_longitude'],
+						'end_latitude': walkData['end_latitude'],
+						'end_longitude': walkData['end_longitude']
+					});
+
+					if (walkData['responder_id'] == user.uid){
+						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['poster_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
+					}
+					else{
+						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['responder_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
+					}
+				});
+			});
+
 		}
 	});
 

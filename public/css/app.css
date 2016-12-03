@@ -1,0 +1,22 @@
+
+#walk-info-modal {
+	height: 250px;
+}
+
+.modal-content {
+	position: fixed;
+	width: 100%;
+}
+
+.modal-content .container .row {
+	text-align: center;
+}
+
+.walk-preview {
+	width: 100%;
+}
+
+.walk-preview .dyn_map {
+	max-height: 200px;
+	width: auto;
+}

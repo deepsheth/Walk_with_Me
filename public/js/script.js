@@ -1,3 +1,4 @@
+
 function log_in(email, password) {
 
 	firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
