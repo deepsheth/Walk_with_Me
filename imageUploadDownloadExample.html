@@ -6,6 +6,8 @@
 
 	<!-- Firebase -->
 	<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+	<!-- GeoFire -->
+	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
 	<script>
 	  // Initialize Firebase
 	  var config = {
@@ -16,12 +18,13 @@
 		messagingSenderId: "306025142010"
 	  };
 	  firebase.initializeApp(config);
+	  var firebaseRef = firebase.database().ref();
+	  var geoFire = new GeoFire(firebaseRef);
 	  firebase.auth().signInWithEmailAndPassword('ark218@lehigh.edu', 'aq1sw2de').catch(function(error) {});
 
 	</script>
 
-	<!-- GeoFire -->
-	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
+	
 
 	<!--Import Google Icon Font-->
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -85,6 +88,159 @@ $('#reload').click(function(){
 		$('#display_pro_pic').append('<img id="downloaded_pro_pic" src="'+url+'" />');
 	});
 });
+
+function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
+	var firebaseRef = firebase.database().ref();
+	var geoFire = new GeoFire(firebaseRef);
+
+	var data = {}
+	data["poster_id"] = user_id;
+	data["start_lat"] = start_lat;
+	data["start_lon"] = start_lon;
+	data["end_lat"] = end_lat;
+	data["end_lon"] = end_lon;
+	data["destination_name"] = destination_name;
+	data["time"] = new Date().getTime();
+
+	var walk_id = firebaseRef.push().getKey();
+	firebaseRef.child("posted_walks_geofire").child(walk_id).set(data);
+
+	geoFire.set(walk_id, [start_lat,start_lon]);
+	return true;
+}
+
+function get_posted_walks(latitude, longitude){
+	var firebaseRef = firebase.database().ref("posted_walks_geofire");
+	var geoFire = new GeoFire(firebaseRef);
+
+	center = [latitude,longitude];
+	//center["latitude"] = latitude;
+	//center["longitude"] = longitude;
+
+	var geoQuery = geoFire.query({
+		center: center,
+		radius: 2 //kilometers
+	});
+
+	var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
+	  console.log(key + " entered query at " + location + " (" + distance + " km from center)");
+	});
+	// lol idk what to do with geoQuery
+}
+
+//pass it the walk id and the type of walk
+//type of walk would be 'posted', 'current', or 'past'
+function get_walk_data(walkID, type){
+	var acceptableTypes = ['posted','current','past'];
+	if (!acceptableTypes.includes(type)){
+		console.log("incorrect walk type, must be 'posted', 'current', or 'past'");
+		return null;
+	}
+	if (!user){
+		var user = firebase.auth().currentUser;
+	}
+	if (!user){
+		console.log("User not signed in");
+		return null;
+	}
+
+	var walkData = {};
+
+	if(type == 'posted'){
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+			walkData['poster_id'] = snapshot.val().poster_id;
+			walkData['start_latitude'] = snapshot.val().start_latitude;
+			walkData['start_longitude'] = snapshot.val().start_longitude;
+			walkData['end_latitude'] = snapshot.val().end_latitude;
+			walkData['end_longitude'] = snapshot.val().end_longitude;
+			walkData['destination_name'] = snapshot.val().destination_name;
+			walkData['time'] = snapshot.val().time;
+		});
+	}
+	else if(type == 'current'){
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+			walkData['poster_id'] = snapshot.val().poster_id;
+			walkData['responder_id'] = snapshot.val().responder_id;
+			walkData['responder_name'] = snapshot.val().responder_name;
+			walkData['responder_num_walks'] = snapshot.val().responder_num_walks;
+			walkData['responder_location'] = snapshot.val().responder_location;
+			walkData['chat_id'] = snapshot.val().chat_id;
+			walkData['start_latitude'] = snapshot.val().start_latitude;
+			walkData['start_longitude'] = snapshot.val().start_longitude;
+			walkData['end_latitude'] = snapshot.val().end_latitude;
+			walkData['end_longitude'] = snapshot.val().end_longitude;
+			walkData['destination_name'] = snapshot.val().destination_name;
+			walkData['time'] = snapshot.val().time;
+		});
+	}
+	else if(type == 'past'){
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+			walkData['poster_id'] = snapshot.val().poster_id;
+			walkData['responder_id'] = snapshot.val().responder_id;
+			walkData['responder_name'] = snapshot.val().responder_name;
+			walkData['responder_num_walks'] = snapshot.val().responder_num_walks;
+			walkData['responder_location'] = snapshot.val().responder_location;
+			walkData['chat_id'] = snapshot.val().chat_id;
+			walkData['start_latitude'] = snapshot.val().start_latitude;
+			walkData['start_longitude'] = snapshot.val().start_longitude;
+			walkData['end_latitude'] = snapshot.val().end_latitude;
+			walkData['end_longitude'] = snapshot.val().end_longitude;
+			walkData['destination_name'] = snapshot.val().destination_name;
+			walkData['time'] = snapshot.val().time;
+		});
+	}
+
+	return walkData;
+
+	
+}
+
+//pass null for the current user's user info
+function get_user_data(userID){
+	if (!user){
+		var user = firebase.auth().currentUser;
+	}
+	if (!user){
+		console.log("User not signed in");
+		return null;
+	}
+
+	if (!userID){
+		var userID = user.uid;
+	}
+	var userData = {};
+
+	firebase.database().ref('/users/'+userID).once('value').then(funtion(snapshot){
+		userData['name'] = snapshot.val().name;
+		userData['school'] = snapshot.val().school;
+		userData['email'] = snapshot.val().email;
+		userData['posted_walk'] = snapshot.val().posted_walk;
+		userData['current_walk'] = snapshot.val().current_walk;
+		userData['number_of_walks'] = snapshot.val().number_of_walks;
+	});
+
+	var storage = firebase.storage();
+	var storageRef = storage.ref();
+
+	//create reference to the location in the database
+	var imagesRef = storageRef.child('profile_pictures');
+
+	// Get the user id to use as the unique filename for their profile picture
+	var userID = firebase.auth().currentUser.uid;
+	var uploadRef = imagesRef.child(userID+'.png');
+
+	//pull the image url, and for example I put it into the display_pro_pic div
+	uploadRef.getDownloadURL().then(function(url){
+		userData['profile_picture'] = url;
+	}).catch(function(error){
+		var defaultRef = imagesRef.child('default-user-image.png');
+		defaultRef.getDownloadURL().then(function(url){
+			userData['profile_picture'] = url;
+		}).catch(function(error{console.log(error)};
+	});
+
+	return userData;
+}
 
 </script>
 

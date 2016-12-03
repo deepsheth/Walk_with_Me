@@ -1,4 +1,46 @@
+<<<<<<< HEAD
+function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
+	var firebaseRef = firebase.database().ref("posted_walks");
+	var geoFire = new GeoFire(firebaseRef);
+
+	var data = {}
+	data["poster_id"] = user_id;
+	data["start_lat"] = start_lat;
+	data["start_lon"] = start_lon;
+	data["end_lat"] = end_lat;
+	data["end_lon"] = end_lon;
+	data["destination_name"] = destination_name;
+	data["time"] = new Date().getTime();
+
+	var walk_id = firebaseRef.push().getKey();
+	firebaseRef.child("posted_walks").child(walk_id).setValue(data);
+
+	geoFire.setLocation(walk_id, new GeoLocation(start_lat,start_lon));
+	return true;
+}
+
+function get_posted_walks(latitude, longitude){
+	var firebaseRef = firebase.database().ref("posted_walks");
+	var geoFire = new GeoFire(firebaseRef);
+
+	center = {};
+	center["latitude"] = latitude;
+	center["longitude"] = longitude;
+
+	var geoQuery = geoFire.query({
+		center: center,
+		radius: 2 //kilometers
+	});
+
+	var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
+	  console.log(key + " entered query at " + location + " (" + distance + " km from center)");
+	});
+	// lol idk what to do with geoQuery
+}
+
+=======
 var map;
+>>>>>>> 558e343e14929d2b354024b4d90833eef5887acc
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 40.6069, lng: -75.3783},
@@ -226,5 +268,8 @@ $(document).ready( function() {
 	// INIT
 	// =======================
 
+<<<<<<< HEAD
     $('.modal').modal();
+=======
+>>>>>>> bc18680c90fc85d405fc93711458d04a103718db
 });
