@@ -1,0 +1,92 @@
+<html>
+<head>
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Firebase -->
+	<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE",
+		authDomain: "walk-with-me-2f1f5.firebaseapp.com",
+		databaseURL: "https://walk-with-me-2f1f5.firebaseio.com",
+		storageBucket: "walk-with-me-2f1f5.appspot.com",
+		messagingSenderId: "306025142010"
+	  };
+	  firebase.initializeApp(config);
+	  firebase.auth().signInWithEmailAndPassword('ark218@lehigh.edu', 'aq1sw2de').catch(function(error) {});
+
+	</script>
+
+	<!-- GeoFire -->
+	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
+
+	<!--Import Google Icon Font-->
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+
+
+Upload Image:
+<p>
+<input type="file" id="pro_pic">
+</p>
+<p>
+<button id="upload">upload</button>
+</p>
+<p>
+<button id="reload">download</button>
+</p>
+<p>
+<div id="display_pro_pic"></div>
+</p>
+
+<script>
+
+//function that runs when they click upload
+$('#upload').click(function(){
+	var storage = firebase.storage();
+	var storageRef = storage.ref();
+
+	//create reference to the location in the database
+	var imagesRef = storageRef.child('profile_pictures');
+	var selectedFile = $('#pro_pic').get(0).files[0];
+
+	// Get the user id to use as the unique filename for their profile picture
+	var userID = firebase.auth().currentUser.uid;
+	var uploadRef = imagesRef.child(userID);
+
+	uploadRef.put(selectedFile).then(function(snapshot) {
+		console.log('Profile Picture Uploaded');
+	});
+});
+
+$('#reload').click(function(){
+	var storage = firebase.storage();
+	var storageRef = storage.ref();
+
+	//create reference to the location in the database
+	var imagesRef = storageRef.child('profile_pictures');
+
+	// Get the user id to use as the unique filename for their profile picture
+	var userID = firebase.auth().currentUser.uid;
+	var uploadRef = imagesRef.child(userID);
+
+	//pull the image url, and for example I put it into the display_pro_pic div
+	uploadRef.getDownloadURL().then(function(url){
+		console.log(url);
+		$('#display_pro_pic').append('<img id="downloaded_pro_pic" src="'+url+'" />');
+	});
+});
+
+</script>
+
+
+</body>
+</html>
