@@ -17,7 +17,7 @@
 	<!-- GeoFire -->
 	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
 	<!--Import Google Icon Font-->
-	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	
 	<!-- CSS -->
 	<!-- Compiled and minified CSS -->
@@ -102,7 +102,45 @@
 
 	<script type="text/javascript">
 
-	var walk_id = window.location.href.split("?user=")[1];
+// DUPLICATE!!
+function addHoverMarkerStart(latitude,longitude, type) {
+	var pos = {
+		lat: latitude,
+		lng: longitude
+	}
+
+	var mkr;
+	if (type == "start") {
+		mkr = {
+	          path: 'm12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z',
+	          scale: 1.75,
+	          fillColor: '#0769AD',
+	          fillOpacity: 1,
+	          strokeColor: '#004A7C',
+	          strokeWeight: 3
+	    };
+	}
+	else {
+		mkr = {
+	          path: 'm12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z',
+	          scale: 1.75,
+	           fillColor: '#e74c3c',
+	          fillOpacity: 1,
+	          strokeColor: '#c0392b',
+	          strokeWeight: 3
+	    };
+	}
+
+	return new google.maps.Marker({
+    	position: pos,
+		icon: mkr,
+		title: "null",
+		map: map
+	});
+}
+
+
+	var walk_id = window.location.href.split("?w=")[1];
 	
 
 	$(document).ready(function() {
@@ -115,21 +153,42 @@
 						return false;
 					})
 				}
-				console.log(walkID);
 				var start_location = [];
 				var end_location = [];
 				get_walk_data(walkID,"past",user,function(walkData){
+					console.log(walkData);
 					start_location = [walkData['start_latitude'],walkData['start_longitude']];
 					end_location = [walkData['end_latitude'],walkData['end_longitude']];
+
+					// Not actually for hovering
+					addHoverMarkerStart(walkData['start_latitude'],walkData['start_longitude'], "start");
+					addHoverMarkerStart(walkData['end_latitude'],walkData['end_longitude'], "end");
 					if (walkData['poster_id'] == user.uid){
 						$('.dyn_username').html(walkData['responder_name']);
 						console.log('/chat.html?w='+walkID);
 						$('.dyn_chat').attr('href','/chat.html?w='+walkID);
 						$('.dyn_dest').html(walkData['destination_name']);
+						$('.dyn_avatar').css('background-image', 'url(' + walkData["poster_image"] + ')');
+
+
+						var storage = firebase.storage();
+						var storageRef = storage.ref();
+
+						//create reference to the location in the database
+						var imagesRef = storageRef.child('profile_pictures');
+
+						// Get the user id to use as the unique filename for their profile picture
+
+						var uploadRef = imagesRef.child(walkData["poster_id"]);
+
+						//pull the image url, and for example I put it into the display_pro_pic div
+						uploadRef.getDownloadURL().then(function(url){
+							$('.dyn_avatar').css('background-image', 'url(' + walkData["poster_image"] + ')');
+						});
 
 						var time = new Date(walkData['time']);
-						var date_string = time.toString().substring(4,15);
-						var time_string = time.toString().substring(15,21);
+						var date_string = time.toString().substring(4,16);
+						var time_string = time.toString().substring(15,22);
 						$('.dyn_date').html(date_string);
 						$('.dyn_time').html(time_string);
 					}
@@ -138,10 +197,25 @@
 						console.log('/chat.html?w='+walkID);
 						$('.dyn_chat').attr('href','/chat.html?w='+walkID);
 						$('.dyn_dest').html(walkData['destination_name']);
+						
+						var storage = firebase.storage();
+						var storageRef = storage.ref();
+
+						//create reference to the location in the database
+						var imagesRef = storageRef.child('profile_pictures');
+
+						// Get the user id to use as the unique filename for their profile picture
+
+						var uploadRef = imagesRef.child(walkData["responder_id"]);
+
+						//pull the image url, and for example I put it into the display_pro_pic div
+						uploadRef.getDownloadURL().then(function(url){
+							$('.dyn_avatar').css('background-image', 'url(' + walkData["poster_image"] + ')');
+						});
 
 						var time = new Date(walkData['time']);
-						var date_string = time.toString().substring(4,14);
-						var time_string = time.toString().substring(15,20);
+						var date_string = time.toString().substring(4,15);
+						var time_string = time.toString().substring(15,21);
 						$('.dyn_date').html(date_string);
 						$('.dyn_time').html(time_string);
 					}

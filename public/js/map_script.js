@@ -1,4 +1,4 @@
-function postWalk(user_id, user_name, num_walks, start_lat,start_lon,end_lat,end_lon,destination_name, icon, usr_name){
+function postWalk(user_id, user_name, num_walks, start_lat,start_lon,end_lat,end_lon,destination_name, icon){
 
 	var firebaseRef = firebase.database().ref();
 	var geoFire = new GeoFire(firebaseRef.child('posted_walks_geofire'));

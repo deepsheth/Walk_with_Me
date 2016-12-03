@@ -17,7 +17,7 @@
 	<!-- GeoFire -->
 	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
 	<!--Import Google Icon Font-->
-	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	
 	<!-- CSS -->
 	<!-- Compiled and minified CSS -->
@@ -187,6 +187,7 @@
 			var locations = [];
 			var walkHistoryRef = firebase.database().ref('walk_history/'+user.uid);
 			walkHistoryRef.on('child_added',function(snapshot){
+				var walkID = snapshot.getKey();
 				console.log(snapshot.getKey());
 				get_walk_data(snapshot.getKey(),'past',user,function(walkData){
 					console.log(walkData);
@@ -218,6 +219,9 @@
 							mkr1.setMap(null);
 							mkr2.setMap(null);
 						});
+						curr_list_item.on('click', function() {
+							window.open("/walk_info.html?w="+walkID);
+						});
 					}
 					else{
 						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image class="tooltipped" data-position="left" data-tooltip="'+walkData['responder_name']+'" src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['responder_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
@@ -229,6 +233,9 @@
 						curr_list_item.on('mouseleave', function() {
 							mkr1.setMap(null);
 							mkr2.setMap(null);
+						});
+						curr_list_item('click', function() {
+							window.open("/walk_info.html?w="+walkID);
 						});
 					}
 					$('.tooltipped').tooltip({delay: 0});
