@@ -58,7 +58,8 @@ function initMap() {
 	  // Browser doesn't support Geolocation
 	  handleLocationError(false, infoWindow, map.getCenter());
 	}
-	}
+
+}
 
 	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 		Materialize.toast("Geolocation failed.");
