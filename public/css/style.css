@@ -1,0 +1,46 @@
+.brand-logo {
+    font-family: 'Fredoka One', cursive;
+}
+
+h2, h3, h4, h5, a {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: bold;
+}
+
+nav {
+	padding: 0em 3em;
+	height: 8vh;
+	background: #fff;
+	color: #000000 !important;
+}
+
+nav a {
+	color: #000000 !important;
+}
+
+.hero {
+	background: url('/img/hero_img.jpg');
+	height: 92vh;
+	position: relative;
+}
+
+.sign-up-panel {
+	position: absolute;
+	left: 1em;
+	top: 5em;
+	background: rgba(255,255,255, .15);
+}
+
+.sign-up-panel .row {
+	width: 25em;
+}
+
+.sign-up-panel .tabs .indicator {
+	width: 50%;
+}
+/* =========== */
+/*    COLORS   */
+/* =========== */
+.bg-primary {
+	background: #17455C !important;
+}
