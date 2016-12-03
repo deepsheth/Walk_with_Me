@@ -45,6 +45,7 @@ function get_posted_walks(latitude, longitude){
 }*/
 
 var map;
+var user_position;
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 40.6069, lng: -75.3783},
@@ -58,6 +59,7 @@ function initMap() {
 	      lat: position.coords.latitude,
 	      lng: position.coords.longitude
 	    };
+	    user_position = pos;
 
         addMarker(map, pos, "current_location");
 
@@ -135,7 +137,7 @@ function addMarker (map, pos, icon, key) {
 			firebase.auth().onAuthStateChanged(function(user) {
 				if (user) {
 					get_walk_data(key, "posted",user,function(walk_info){
-						display_walk_info(walk_info);
+						display_walk_info(walk_info,key);
 					});
 				}
 			});
@@ -295,12 +297,49 @@ function get_walk_data(walkID, type, user,after){
 
 }
 
-function display_walk_info(walk_info) {
+
+function display_walk_info(walk_info,key) {
 	$('#walk-info-modal').modal('open');
 
 	$('.dyn_location').val(walk_info["destination_name"]);
 	var dyn_src = "https://maps.googleapis.com/maps/api/staticmap?center="+walk_info["start_latitude"] + "," + walk_info["start_longitude"] + "&zoom=15&size=450x300&markers=color:0x2196F3%7Clabel:S%7C"+walk_info["end_latitude"] + "," + walk_info["end_longitude"] + "&markers=color:0xE74C3C%7Clabel:D%7C40.60506,-75.387174&key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE";
 	$('.dyn_map').attr("src", dyn_src);
+	$('#walk-with-button').click(function(){
+		$('#walk-with-button').hide();
+		$('#loading').show();
+		console.log(user_position);
+		get_user_data(null,function(userData){
+			var payload = {
+			'poster_id': walk_info['poster_id'],
+			'poster_name': walk_info['poster_name'],
+			'poster_num_walks': walk_info['poster_num_walks'],
+			'responder_id': user.uid,
+			'responder_name': userData['name'],
+			'responder_num_walks': userData['number_of_walks'],
+			'responder_location': {
+				'latitude': 40,
+				'longitude': -75
+			},
+			'isStarted': false,
+			'start_longitude': walk_info['start_longitude'],
+			'start_latitude': walk_info['start_latitude'],
+			'end_longitude': walk_info['end_longitude'],
+			'end_latitude': walk_info['end_latitude'],
+			'destination_name': walk_info['destination_name'],
+			'icon': false,
+			'time': new Date.getTime()
+		};
+		firebase.Database().ref('current_walks/'+key).set(payload);
+		firebase.Database().ref('users/'+walk_info['poster_id']+'/posted_walk').set(false);
+		firebase.Database().ref('users/'+walk_info['poster_id']+'/current_walk').set(key);
+		firebase.Database().ref('users/'+user.uid+'/current_walk').set(key);
+		firebase.Database().ref('posted_walks/'+key).remove();
+		//$('#walk-with-button').hide();
+		$('#loading').hide();
+		});
+
+		
+	});
 }
 
 
@@ -324,13 +363,12 @@ $(document).ready( function() {
 			window.location.href = "/";
 		}
 	});
-
 	$('#btn_log_out').click(function() { sign_out(); });
 
 	// =======================
 	// INIT
 	// =======================
-
+	
 
     $('.modal').modal();
 });
