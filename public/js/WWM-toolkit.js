@@ -11,7 +11,6 @@ function get_user_data(userID,after){
 		var userID = user.uid;
 	}
 	var userData = {};
-
 	firebase.database().ref('users/'+userID).once('value').then(function(snapshot){
 		userData['name'] = snapshot.val().name;
 		userData['school'] = snapshot.val().school;
@@ -27,7 +26,7 @@ function get_user_data(userID,after){
 
 		// Get the user id to use as the unique filename for their profile picture
 		var userID = firebase.auth().currentUser.uid;
-		var uploadRef = imagesRef.child(userID+'.png');
+		var uploadRef = imagesRef.child(userID+'.jpg');
 
 		//pull the image url, and for example I put it into the display_pro_pic div
 		uploadRef.getDownloadURL().then(function(url){
@@ -38,10 +37,9 @@ function get_user_data(userID,after){
 			var defaultRef = imagesRef.child('default-user-image.png');
 			defaultRef.getDownloadURL().then(function(url){
 				userData['profile_picture'] = url;
-				after(userData);
+				after(userData,user);
 			}).catch(function(error){console.log(error)});
 		});
-		
 	});
 }
 
