@@ -16,13 +16,15 @@
 	</script>
 	<!-- GeoFire -->
 	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
-	<!--Import Google Icon Font-->
-	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		
 	<!-- CSS -->
-	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+	
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Fredoka+One|Montserrat:400,700" rel="stylesheet">
 	<link rel="stylesheet" href="/css/style.css">
+	
 	<!-- JS -->
 	<!-- Compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -39,11 +41,9 @@
 	</script>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#!" class="brand-logo">Walk with Me</a>
+			<a href="/" class="brand-logo">Walk with Me</a>
 			<ul class="right hide-on-med-and-down">
-				<li><a href="past.html">Past Walks</a></li>
-				<li><a href="login.html">Log In</a></li>
-				<li><a href="!#">Log Out</a></li>
+				<li><strong>Please Log In</strong></li>
 			</ul>
 			
 			<ul id="slide-out" class="side-nav">
@@ -88,29 +88,35 @@
 							</div>
 						</div>
 						<div class="row center">
-							<a id="btn_log_in" class="waves-effect waves-light btn btn-flat white-text">Log In<i class="material-icons right">arrow_forward</i></a>
+							<button id="btn_log_in" class="waves-effect waves-light btn btn-flat white-text" type="submit" >Log In<i class="material-icons right">arrow_forward</i></button>
 						</div>
 					</form>
 				</div>
 			</div>
- 
+			
 			<div id="sign_up_panel" class="col s12">
 				<div class="row">
 					<form>
 						<div class="row center">
-							<div class="input-field col s8  offset-s2">
-								<input id="sign_in_username" type="text">
-								<label for="sign_in_username">Email</label>
+							<div class="input-field col s8 offset-s2">
+								<input id="create_name" type="text">
+								<label for="create_name">Name</label>
 							</div>
 						</div>
 						<div class="row center">
 							<div class="input-field col s8  offset-s2">
-								<input id="sign_in_password" type="password">
-								<label for="sign_in_password">Password</label>
+								<input id="create_username" type="text">
+								<label for="create_username">Email</label>
 							</div>
 						</div>
 						<div class="row center">
-							<a id="btn_sign_in" class="waves-effect waves-light btn btn-flat white-text">Get Started! <i class="material-icons right">arrow_forward</i></a>
+							<div class="input-field col s8  offset-s2">
+								<input id="create_password" type="password">
+								<label for="create_password">Password</label>
+							</div>
+						</div>
+						<div class="row center">
+							<button id="btn_create_user" class="waves-effect waves-light btn btn-flat white-text" type="submit" >Get Started! <i class="material-icons right">arrow_forward</i></button>
 						</div>
 					</form>
 				</div>
