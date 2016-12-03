@@ -51,7 +51,6 @@ function create_user(email, password, name) {
 
 
 $(document).ready( function() {
-<<<<<<< HEAD
 	// =======================
 	// AUTH
 	// =======================
@@ -81,18 +80,6 @@ $(document).ready( function() {
 	$('#btn_log_out').click(function(event) {
 		event.preventDefault();
 		sign_out(); 
-=======
-	
-	if (!get_user()) {
-		
-	}
-	else {
-		console.log("User is logged in.");
-	}
-
-	$("btn_log_in").click(function() {
-		log_in();
->>>>>>> ec5a82798f73fa21a66f50a2de99d555ed219f53
 	});
 
 	// Create acct
