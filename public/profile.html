@@ -176,6 +176,24 @@
 		console.log(url);
 		$('#user-profile-picture-image').attr('src',url);
 	});
+
+	$('user_picture').click(function(){
+		$('#user-profile-picture-image').attr('src','https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c');
+		var storage = firebase.storage();
+		var storageRef = storage.ref();
+
+		//create reference to the location in the database
+		var imagesRef = storageRef.child('profile_pictures');
+		var selectedFile = $('#pro_pic').get(0).files[0];
+
+		// Get the user id to use as the unique filename for their profile picture
+		var userID = firebase.auth().currentUser.uid;
+		var uploadRef = imagesRef.child(userID);
+
+		uploadRef.put(selectedFile).then(function(snapshot) {
+			console.log('Profile Picture Uploaded');
+		});
+	});
 	</script>
 
 
