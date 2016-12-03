@@ -79,8 +79,8 @@
 		<div id="enter-message">
 			<div class="row">
 			<div class="input-field col s12">
-	          <input id="last_name" type="text" class="validate">
-	          <label for="last_name">Send Message...</label>
+	          <input id="send-message" type="text" class="validate2">
+	          <label for="send-message">Send Message...</label>
 	        </div>
 	    </div>
 		</div>
@@ -99,6 +99,25 @@ firebase.auth().onAuthStateChanged(function(user) {
 			return false;
 		})
 	}
+
+	get_user_data(null,function(userData){
+		var user_name = userData['name'];
+		$("#send-message").keypress(function(event) {
+		    if (event.which == 13 && $('#send-message').val() != '') {
+		    	messageData = {
+		    		time: Date.now(),
+		    		text: $('#send-message').val(),
+		    		sender_name: user_name,
+		    		sender_image: '',
+		    		sender_id: user.uid
+		    	};
+		        var newMessageKey = firebase.database().ref('chats/'+walkID).push().key;
+
+		        firebase.database().ref('chats/'+walkID+'/'+newMessageKey).set(messageData);
+		        $('#send-message').val() = '';
+		     }
+		});
+	});
 
 	get_walk_data(walkID,'past',user,function(walkData){
 		var d = $('#messages');
@@ -125,18 +144,15 @@ firebase.auth().onAuthStateChanged(function(user) {
 			$('#message-collection').append('<li class="collection-item avatar responder"><span class="title">'+snapshot.val().text+'</span></li>');
 		}
 	});
+
   }
   else{
   	window.location.replace('/index.html');
   }
+
 });
 
-$("#s").keypress(function(e) {
-    if(e.which == 13) {
-        alert('You pressed enter!');
-    $("#go").click();
-    }
-});
+
 
 </script>
 
