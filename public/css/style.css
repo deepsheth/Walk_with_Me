@@ -44,3 +44,95 @@ nav a {
 .bg-primary {
 	background: #17455C !important;
 }
+
+
+
+
+/* --- Profile Page Styles --- */
+#personal_info {
+	height: 300px;
+	text-align: center;
+	background-color: #424242;
+}
+
+#user_picture {
+	text-align: right;
+}
+
+#user_picture img {
+	border-radius: 50%;
+	height: 165px;
+	margin-top: 100px;
+}
+
+#name_walks_wrapper {
+	margin-top: 130px;
+	text-align: left;
+	color: white;
+	font-size: 2.5rem;
+}
+
+#user_walks {
+	font-size: 1.3rem;
+	color: darkgray;
+}
+
+
+#past_walks_title {
+	text-align: center;
+}
+
+#map {
+	height: 425px;
+}
+
+#list {
+	height: 425px;
+	background-color: lightgray;
+}
+
+
+#walk-card {
+	height: 75px;
+	overflow: hidden;
+}
+
+#walk-info {
+	line-height: 75px;
+	font-style: italic;
+	text-align: center;
+}
+
+.walk-partner {
+	font-weight: bold;
+	font-size: 17px;
+	font-style: normal;
+	margin-left: 1px;
+}
+
+.walk-partner-image {
+	margin-bottom: -20px;
+}
+
+.walk-partner-image img {
+	height: 40px;
+	border-radius: 50%;
+	margin-bottom: -12px;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.walk-destination {
+	font-style: normal;
+	font-weight: bold;
+	font-size: 17px;
+	margin-left: 1px;
+}
+
+.walk-date {
+	height: 75px;
+	line-height: 75px;
+}
+
+
+
