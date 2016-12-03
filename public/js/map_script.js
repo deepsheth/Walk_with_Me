@@ -31,6 +31,9 @@ function get_posted_walks(latitude, longitude){
 		radius: 2 //kilometers
 	});
 
+	var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
+	  console.log(key + " entered query at " + location + " (" + distance + " km from center)");
+	});
 	// lol idk what to do with geoQuery
 }
 
@@ -106,4 +109,5 @@ $(document).ready( function() {
 	// =======================
 	// MAP
 	// =======================
+
 });
