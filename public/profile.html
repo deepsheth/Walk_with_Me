@@ -18,6 +18,7 @@
 	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
 	<!--Import Google Icon Font-->
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	
 	<!-- CSS -->
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
@@ -26,22 +27,22 @@
 	<!-- JS -->
 	<!-- Compiled and minified JavaScript -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	
 	<script type="text/javascript" src="/js/script.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE&callback=initMiniMap"
+	async defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
-
 <html>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#!" class="brand-logo">Walk with Me</a>
+			<a href="/app.html" class="brand-logo">Walk with Me</a>
 			<ul class="right hide-on-med-and-down">
-				<li><a href="past.html">Past Walks</a></li>
-				<li><a href="login.html">Log In</a></li>
-				<li><a href="!#">Log Out</a></li>
+				<li><a href="profile.html">Past Walks</a></li>
+				<li><a id="btn_log_out">Log Out</a></li>
 			</ul>
-			
 			<ul id="slide-out" class="side-nav">
 				<li><div class="userView">
 					<div class="background">
@@ -51,7 +52,7 @@
 					<a href="#!name"><span class="white-text name">Deep Sheth</span></a>
 					<a href="#!email"><span class="white-text email">deepsheth@lehigh.com</span></a>
 				</div></li>
-				<li><a href="past.html"><i class="material-icons">history</i>Past Walks</a></li>
+				<li><a href="profile.html"><i class="material-icons">history</i>Past Walks</a></li>
 				<li><a href="login.html"><i class="material-icons">account_circle</i>Log In</a></li>
 				<li><div class="divider"></div></li>
 				<li><a href="!#"><i class="material-icons"></i>Log Out</a></li>
@@ -72,111 +73,96 @@
 	</div>
 	<div id="past_walks">
 		<div class="container">
-			<div id="past_walks_title"><h3>Past Walks</h3></div>
+			<div id="past_walks_title"><div class="section"><h3>Past Walks</h3></div></div>
 			<div class="row">
-				<div id="map" class="col s6">
-					map goes here
+				<div class="col s6">
+					<div id="mini-map" >
+						map goes here
+					</div>
 				</div>
-				<div id="list" class="col s6">
-					<div id="walk-cards-title" class="row">
+				<div id="list" class="col s6 grey lighten-4">
+					<div id="walk-cards-title" class="row center grey-text grey lighten-3">
 						<span id="walked-with" class="col s4">walked with</span><span id="walked-to" class="col s4">to</span><span id="walked-date" class="col s4">on</span>
 					</div>
-					<div id="walk-card" class="row">
+					<div id="walk-card" class="row hoverable">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
-
-
-
-
-
-
-					<div id="walk-card" class="row">
+					<div id="walk-card" class="row hoverable">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
-					<div id="walk-card" class="row">
+					<div id="walk-card" class="row hoverable">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
-					<div id="walk-card" class="row">
+					<div id="walk-card" class="row hoverable">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
 					<div id="walk-card" class="row">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
 					<div id="walk-card" class="row">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
 					<div id="walk-card" class="row">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
 					<div id="walk-card" class="row">
 						<div id="walk-info">
-						<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
+							<span class="walk-partner col s4"><span class="walk-partner-image"><image src="https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2FKohFVT0scPa5CNGXGM5cDnedHdr2?alt=media&token=09e17761-9414-4eb9-857d-fc0661dca57f"></span><span class="walk-partner-name">Adam</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">Rauch</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">Dec 2nd</span>
 						</div>
 					</div>
-
-
-
-
-
-
-
-
-
-
-
-
 				</div>
 			</div>
 		</div>
 		<input id="pro-pic-upload" type="file" style="display:none;">
 	</div>
-
 	<script>
-	
-
-	var user = firebase.auth().currentUser;
-
-	if (!user){
-		firebase.auth().signInWithEmailAndPassword('ark218@lehigh.edu', 'aq1sw2de').catch(function(error) {alert(error)});
-		var user = firebase.auth().currentUser;
-	}
-	var userID = user.uid;
-	console.log(userID);
-
-	firebase.database().ref('users/'+userID).once('value').then(function(snapshot){
-		var name = snapshot.val().name;
-		var numWalks = snapshot.val().number_of_walks;
-		$('#user_name').html(name+'<i id="edit-name" class="material-icons">mode_edit</i>');
-		$('#user_walks').html(numWalks+" walks");
+	firebase.auth().onAuthStateChanged(function(user) {
+		
+		if (user) {
+			var user = firebase.auth().currentUser;
+			var userID = user.uid;
+			console.log(userID);
+		
+			var reference = firebase.database().ref("users/" + userID);
+			console.log(reference);
+			reference.once('value').then(function(snapshot){
+				var name = snapshot.val().name;
+				var numWalks = snapshot.val().number_of_walks;
+				$('#user_name').html(name+'<i id="edit-name" class="material-icons">mode_edit</i>');
+				$('#user_walks').html(numWalks+" walks");
+			}, function(error) {
+				console.log(error.message);
+			});
+			var storage = firebase.storage();
+			var storageRef = storage.ref();
+			//create reference to the location in the database
+			var imagesRef = storageRef.child('profile_pictures');
+			// Get the user id to use as the unique filename for their profile picture
+			var uploadRef = imagesRef.child(userID+'.png');
+			//pull the image url, and for example I put it into the display_pro_pic div
+			uploadRef.getDownloadURL().then(function(url){
+				console.log(url);
+				$('#user-profile-picture-image').attr('src',url);
+			}).catch(function(error) {
+				console.log("User has not uploaded image yet.");
+			});
+		}
 	});
-	var storage = firebase.storage();
-	var storageRef = storage.ref();
-
-	//create reference to the location in the database
-	var imagesRef = storageRef.child('profile_pictures');
-
-	// Get the user id to use as the unique filename for their profile picture
-	var uploadRef = imagesRef.child(userID+'.png');
-
-	//pull the image url, and for example I put it into the display_pro_pic div
-	uploadRef.getDownloadURL().then(function(url){
-		console.log(url);
-		$('#user-profile-picture-image').attr('src',url);
-	});
+<<<<<<< HEAD
 
 	$('#user_picture').click(function(){
 		console.log('clicked user pic');
@@ -211,10 +197,10 @@
 		
 	});
 
+=======
+	
+>>>>>>> 558e343e14929d2b354024b4d90833eef5887acc
 	
 	</script>
-
-
 </div>
-
 </html>
