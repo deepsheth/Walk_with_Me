@@ -1,7 +1,7 @@
 function postWalk(user_id, user_name, num_walks, start_lat,start_lon,end_lat,end_lon,destination_name, icon, usr_name){
 
 	var firebaseRef = firebase.database().ref();
-	var geoFire = new GeoFire(firebaseRef.child('posted_walks_geofire_test'));
+	var geoFire = new GeoFire(firebaseRef.child('posted_walks_geofire'));
 
 	var data = {};
 	data["poster_id"] = user_id;
@@ -15,8 +15,8 @@ function postWalk(user_id, user_name, num_walks, start_lat,start_lon,end_lat,end
 	data["icon"] = false;
 	data["time"] = new Date().getTime();
 
-	var walk_id = firebaseRef.child('posted_walks_test').push().getKey();
-	firebaseRef.child("posted_walks_test").child(walk_id).set(data);
+	var walk_id = firebaseRef.child('posted_walks').push().getKey();
+	firebaseRef.child("posted_walks").child(walk_id).set(data);
 
 	geoFire.set(walk_id, [start_lat,start_lon]);
 	return true;
@@ -113,7 +113,7 @@ function addMarker (map, pos, icon, key) {
 	}
 
 	var walkData = {};
-	firebase.database().ref('posted_walks_test/' + key).once('value').then(function(snapshot) {
+	firebase.database().ref('posted_walks/' + key).once('value').then(function(snapshot) {
 		console.log(snapshot.val());
 		walkData['poster_id'] = snapshot.val().poster_id;
 		walkData['start_latitude'] = snapshot.val().start_latitude;
@@ -220,7 +220,7 @@ function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
 function get_posted_walks(latitude, longitude){
 
 	var firebaseRef = firebase.database().ref();
-	var geoFire = new GeoFire(firebaseRef.child('posted_walks_geofire_test'));
+	var geoFire = new GeoFire(firebaseRef.child('posted_walks_geofire'));
 
 	center = [latitude,longitude];
 	//center["latitude"] = latitude;
@@ -260,7 +260,7 @@ function get_walk_data(walkID, type, user,after){
 	var walkData = {};
 
 	if(type == 'posted'){
-		firebase.database().ref('/posted_walks_test/' + walkID).once('value').then(function(snapshot) {
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
 			walkData['poster_id'] = snapshot.val().poster_id;
 			walkData['start_latitude'] = snapshot.val().start_latitude;
 			walkData['start_longitude'] = snapshot.val().start_longitude;
