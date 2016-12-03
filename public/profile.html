@@ -213,16 +213,35 @@
 					if (walkData["responder_image"] == null) {
 						walkData["responder_image"] = "https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c";
 					}
-					console.log(walkData);
+					var curr_list_item, mkr1, mkr2;
 					if (walkData['responder_id'] == user.uid){
 						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s2"><span class="walk-partner-image"><image class="tooltipped" data-position="left" data-tooltip="'+walkData['poster_name']+'" src="'+walkData['poster_image']+'"></span><span class="walk-partner-name">'+walkData['poster_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s5">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
+
+						curr_list_item = $('#list .row:last');
+						curr_list_item.on('mouseenter', function() {
+							mkr1 = addHoverMarkerStart(walkData["start_latitude"], walkData["start_longitude"], "start");
+							mkr2 = addHoverMarkerStart(walkData["start_latitude"], walkData["end_longitude"], "end");
+						});
+						curr_list_item.on('mouseleave', function() {
+							mkr1.setMap(null);
+							mkr2.setMap(null);
+						});
 					}
 					else{
 						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image class="tooltipped" data-position="left" data-tooltip="'+walkData['responder_name']+'" src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['responder_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
+
+						curr_list_item = $('#list .row:last');
+						curr_list_item.on('mouseenter', function() {
+							mkr1 = addHoverMarkerStart(walkData["start_latitude"], walkData["start_longitude"], "start");
+							mkr2 = addHoverMarkerStart(walkData["start_latitude"], walkData["end_longitude"], "end");
+
+						});
+						curr_list_item.on('mouseleave', function() {
+							mkr1.setMap(null);
+							mkr2.setMap(null);
+						});
 					}
 
-					console.log("post: " + walkData["poster_name"]);
-					console.log(walkData["responder_name"]);
 
 					$('.tooltipped').tooltip({delay: 0});
 				});
