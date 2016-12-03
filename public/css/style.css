@@ -69,13 +69,34 @@ nav a {
 
 /* --- Profile Page Styles --- */
 #personal_info {
-	height: 300px;
+	height: 22em;
 	text-align: center;
-	background-color: #424242;
+	background-color: #37474F;
+	border-bottom: 5px solid #D6D6D6;
+}
+
+#name_walks_wrapper #user_name  {
+	font-variant: small-caps;
+	font-size: 1.25em;
+	letter-spacing: 1.05px;
+	text-shadow: 0px 4px #263238;
 }
 
 #user_picture {
 	text-align: right;
+}
+
+#user-profile-picture-image {
+	background: url('https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c');
+	background-size: cover;
+	height: 10em;
+	width: 10em;
+	margin-top: 7em;
+	border-radius: 50%;
+	float: right;
+	background-position: center;
+	border: 5px solid #263238;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.085),0 3px 10px 0 rgba(0,0,0,.1);
 }
 
 #user_picture img {
@@ -85,7 +106,7 @@ nav a {
 }
 
 #name_walks_wrapper {
-	margin: 3.75em auto;
+	margin: 3.25em auto;
 	text-align: left;
 	color: white;
 	font-size: 2.5rem;
@@ -186,13 +207,18 @@ nav a {
 
 #edit-profile-picture {
 	display: none;
+	position: relative;
+	top: 10em;
+	left: 6em;
 }
 
 #user_name:hover #edit-name {
 	display: inline-block;
+	font-variant: normal;
+	margin-left: .5em;
 }
 
-#user_picture img:hover ~ #edit-profile-picture {
+#user-profile-picture-image:hover ~ #edit-profile-picture {
 	display: inline-block;
 	margin-left: -24px;
 }
