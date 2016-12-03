@@ -43,6 +43,13 @@ nav a {
 	width: 100%;
 }
 
+#btn-post-walk {
+	position: absolute;
+	bottom: 10;
+	left: 45%;
+
+}
+
 .sign-up-panel {
 	position: absolute;
 	left: 1em;

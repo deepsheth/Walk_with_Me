@@ -99,12 +99,16 @@ function addMarker (map, pos, icon, key) {
 	          strokeWeight: 5
 	    };
 
-			new google.maps.Marker({
-	    	position: pos,
-			icon: mkr,
-			title: "null",
-			map: map
+			var location_mkr = new google.maps.Marker({
+		    	position: pos,
+				icon: mkr,
+				title: "null",
+				map: map
 			});
+
+			location_mkr.addListener('click', function() {
+				Materialize.toast("Your location", 3000);
+			})
 
 
 		return;	
