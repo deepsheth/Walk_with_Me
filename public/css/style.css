@@ -10,6 +10,8 @@ h2, h3, h4, h5, a {
 nav {
 	padding: 0em 3em;
 	height: 8vh;
+	line-height: 8vh !important;
+	min-height: 64px;
 	background: #fff;
 	color: #000000 !important;
 }
@@ -20,8 +22,20 @@ nav a {
 
 .hero {
 	background: url('/img/hero_img.jpg');
+	width: 100%;
+	background-size: cover;
 	height: 92vh;
 	position: relative;
+}
+
+.map-container {
+    height: 92%;
+    width: 100%;
+}
+
+#map {
+	width: 100%;
+	height: 100%;
 }
 
 .sign-up-panel {
