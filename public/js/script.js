@@ -77,10 +77,6 @@ function initMiniMap() {
 	});
 }
 
-function changeProPic() {
-
-}
-
 $(document).ready( function() {
 	// =======================
 	// AUTH
@@ -130,6 +126,7 @@ $(document).ready( function() {
 	// Dynamic HTML Init
 	// =======================
 	$(".button-collapse").sideNav();
+	$('.tooltipped').tooltip({delay: 30});
 
 
 
