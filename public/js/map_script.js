@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
 	var firebaseRef = firebase.database().ref("posted_walks");
 	var geoFire = new GeoFire(firebaseRef);
@@ -38,9 +37,7 @@ function get_posted_walks(latitude, longitude){
 	// lol idk what to do with geoQuery
 }
 
-=======
 var map;
->>>>>>> 558e343e14929d2b354024b4d90833eef5887acc
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 40.6069, lng: -75.3783},
@@ -73,15 +70,22 @@ function initMap() {
 		Materialize.toast("Geolocation failed.");
 	}
 
-function addMarker (map, pos, icon) {
+function addMarker (map, pos, icon, key) {
+
 	var baseMarkerURL = "/img/marker/";
 	var marker_icon;
 
-	if (icon != null) {
-		marker_icon = baseMarkerURL + icon + ".png";
-	}
-	else {
-		marker_icon = baseMarkerURL + "default.png";
+	// key should only be null for current location marker
+	if (key == null) {
+		marker_icon = baseMarkerURL + "current_location.png";
+		new google.maps.Marker({
+	    	position: pos,
+			icon: marker_icon,
+			title: "null",
+			map: map
+		});
+
+		return;	
 	}
 
  	var angled_marker = {
@@ -94,11 +98,19 @@ function addMarker (map, pos, icon) {
           rotation: 45,
     };
 
-    new google.maps.Marker({
+    var title;
+    var map_marker = new google.maps.Marker({
     	position: pos,
 		icon: angled_marker,
 		map: map
 	});
+
+	map_marker.addListener('click', function() {
+		var walk_info = get_walk_data(key, "posted");
+		display_walk_info(walk_info);
+    });
+
+
 }
 
 function addMarkerHelper(key, location, distance, icon) {
@@ -107,7 +119,7 @@ function addMarkerHelper(key, location, distance, icon) {
 	    	lng: location[1]
 	}
 
-	addMarker(map, pos, "red");
+	addMarker(map, pos, "red", key);
 }
 
 function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
@@ -131,7 +143,6 @@ function postWalk(user_id,start_lat,start_lon,end_lat,end_lon,destination_name){
 }
 
 function get_posted_walks(latitude, longitude){
-	console.log("getting walks from " + latitude + " , " + longitude);
 
 	var firebaseRef = firebase.database().ref("posted_walks_geofire");
 	var geoFire = new GeoFire(firebaseRef);
@@ -154,6 +165,78 @@ function get_posted_walks(latitude, longitude){
 	});
 	// lol idk what to do with geoQuery
 }
+
+//pass it the walk id and the type of walk
+//type of walk would be 'posted', 'current', or 'past'
+function get_walk_data(walkID, type){
+	var acceptableTypes = ['posted','current','past'];
+	if (!acceptableTypes.includes(type)){
+		console.log("incorrect walk type, must be 'posted', 'current', or 'past'");
+		return null;
+	}
+	if (!user){
+		var user = firebase.auth().currentUser;
+	}
+	if (!user){
+		console.log("User not signed in");
+		return null;
+	}
+
+	var walkData = {};
+
+	if(type == 'posted'){
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+			walkData['poster_id'] = snapshot.val().poster_id;
+			walkData['start_latitude'] = snapshot.val().start_latitude;
+			walkData['start_longitude'] = snapshot.val().start_longitude;
+			walkData['end_latitude'] = snapshot.val().end_latitude;
+			walkData['end_longitude'] = snapshot.val().end_longitude;
+			walkData['destination_name'] = snapshot.val().destination_name;
+			walkData['time'] = snapshot.val().time;
+		});
+	}
+	else if(type == 'current'){
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+			walkData['poster_id'] = snapshot.val().poster_id;
+			walkData['responder_id'] = snapshot.val().responder_id;
+			walkData['responder_name'] = snapshot.val().responder_name;
+			walkData['responder_num_walks'] = snapshot.val().responder_num_walks;
+			walkData['responder_location'] = snapshot.val().responder_location;
+			walkData['chat_id'] = snapshot.val().chat_id;
+			walkData['start_latitude'] = snapshot.val().start_latitude;
+			walkData['start_longitude'] = snapshot.val().start_longitude;
+			walkData['end_latitude'] = snapshot.val().end_latitude;
+			walkData['end_longitude'] = snapshot.val().end_longitude;
+			walkData['destination_name'] = snapshot.val().destination_name;
+			walkData['time'] = snapshot.val().time;
+		});
+	}
+	else if(type == 'past'){
+		firebase.database().ref('/posted_walks/' + walkID).once('value').then(function(snapshot) {
+			walkData['poster_id'] = snapshot.val().poster_id;
+			walkData['responder_id'] = snapshot.val().responder_id;
+			walkData['responder_name'] = snapshot.val().responder_name;
+			walkData['responder_num_walks'] = snapshot.val().responder_num_walks;
+			walkData['responder_location'] = snapshot.val().responder_location;
+			walkData['chat_id'] = snapshot.val().chat_id;
+			walkData['start_latitude'] = snapshot.val().start_latitude;
+			walkData['start_longitude'] = snapshot.val().start_longitude;
+			walkData['end_latitude'] = snapshot.val().end_latitude;
+			walkData['end_longitude'] = snapshot.val().end_longitude;
+			walkData['destination_name'] = snapshot.val().destination_name;
+			walkData['time'] = snapshot.val().time;
+		});
+	}
+
+	return walkData;
+}
+
+function display_walk_info(walk_info) {
+	$('#walk-info-modal').modal('open');
+
+	
+}
+
 
 function sign_out() {
 	firebase.auth().signOut().then(function() {
@@ -179,7 +262,9 @@ $(document).ready( function() {
 	$('#btn_log_out').click(function() { sign_out(); });
 
 	// =======================
-	// MAP
+	// INIT
 	// =======================
 
+
+    $('.modal').modal();
 });
