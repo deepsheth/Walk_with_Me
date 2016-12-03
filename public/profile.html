@@ -131,6 +131,7 @@
 		<input id="pro-pic-upload" type="file" style="display:none;">
 	</div>
 	<script>
+
 	firebase.auth().onAuthStateChanged(function(user) {
 		
 		if (user) {
@@ -189,7 +190,9 @@
 			var locations = [];
 			var walkHistoryRef = firebase.database().ref('walk_history/'+user.uid);
 			walkHistoryRef.on('child_added',function(snapshot){
+				console.log(snapshot.getKey());
 				get_walk_data(snapshot.getKey(),'past',user,function(walkData){
+					console.log(walkData);
 					var date = new Date(walkData['time']);
 					var date_string = date.toString()
 					var date_string = date_string.substring(4,10);
@@ -203,12 +206,25 @@
 						'end_longitude': walkData['end_longitude']
 					});
 
+					// if (typeof walkData[responder_image] === 'undefined') {
+					//     // variable is undefined
+					// }
+
+					if (walkData["responder_image"] == null) {
+						walkData["responder_image"] = "https://firebasestorage.googleapis.com/v0/b/walk-with-me-2f1f5.appspot.com/o/profile_pictures%2Fdefault-user-image.png?alt=media&token=63589b69-e115-43e5-9248-562eb2f7de2c";
+					}
+					console.log(walkData);
 					if (walkData['responder_id'] == user.uid){
-						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['poster_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
+						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s2"><span class="walk-partner-image"><image class="tooltipped" data-position="left" data-tooltip="'+walkData['poster_name']+'" src="'+walkData['poster_image']+'"></span><span class="walk-partner-name">'+walkData['poster_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s5">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
 					}
 					else{
-						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['responder_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
+						$('#list').append('<div id="walk-card" class="row hoverable"><div id="walk-info"><span class="walk-partner col s4"><span class="walk-partner-image"><image class="tooltipped" data-position="left" data-tooltip="'+walkData['responder_name']+'" src="'+walkData['responder_image']+'"></span><span class="walk-partner-name">'+walkData['responder_name']+'</span></span><span class="walk-info-small col s1">to</span><span class="walk-destination col s3">'+walkData['destination_name']+'</span><span class="walk-info-small col s1">on</span><span class="walk-date col s3">'+date_string+'</span></div></div>');
 					}
+
+					console.log("post: " + walkData["poster_name"]);
+					console.log(walkData["responder_name"]);
+
+					$('.tooltipped').tooltip({delay: 0});
 				});
 			});
 
