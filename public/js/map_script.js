@@ -42,11 +42,21 @@ function addMarker (map, pos, icon) {
 		marker_icon = baseMarkerURL + "default.png";
 	}
 
-	var beachMarker = new google.maps.Marker({
-		position: pos,
-		map: map,
-		icon: marker_icon
-    });
+ 	var angled_marker = {
+          path: 'm12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z',
+          scale: 1.75,
+          fillColor: '#e74c3c',
+          fillOpacity: 1,
+          strokeColor: '#c0392b',
+          strokeWeight: 3,
+          rotation: 45,
+    };
+
+    new google.maps.Marker({
+    	position: pos,
+		icon: angled_marker,
+		map: map
+	});
 }
 
 function addMarkerHelper(key, location, distance, icon) {
@@ -54,8 +64,7 @@ function addMarkerHelper(key, location, distance, icon) {
 	    	lat: location[0],
 	    	lng: location[1]
 	}
-	
-	console.log(pos);
+
 	addMarker(map, pos, "red");
 }
 
