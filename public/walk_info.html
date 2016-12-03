@@ -1,0 +1,126 @@
+<head>
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Firebase -->
+	<script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+	<script>
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE",
+		authDomain: "walk-with-me-2f1f5.firebaseapp.com",
+		databaseURL: "https://walk-with-me-2f1f5.firebaseio.com",
+		storageBucket: "walk-with-me-2f1f5.appspot.com",
+		messagingSenderId: "306025142010"
+	};
+	firebase.initializeApp(config);
+	</script>
+	<!-- GeoFire -->
+	<script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
+	<!--Import Google Icon Font-->
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	
+	<!-- CSS -->
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Fredoka+One|Montserrat:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="/css/style.css">
+	<!-- JS -->
+	<!-- Compiled and minified JavaScript -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	
+	<script type="text/javascript" src="/js/script_details.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBn3v_1yzu_bEKpxBUCPKtQVJngCYoamgE&callback=initMiniMap"
+	async defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<html>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="/app.html" class="brand-logo">Walk with Me</a>
+			<ul class="right hide-on-med-and-down">
+				<li><a href="profile.html">Past Walks</a></li>
+				<li><a id="btn_log_out">Log Out</a></li>
+			</ul>
+			<ul id="slide-out" class="side-nav">
+				<li><div class="userView">
+					<div class="background">
+						<img src="http://cdn-7.nikon-cdn.com/Images/Learn-Explore/Photography-Techniques/2012/Bokeh-for-Beginners/Media/Bokeh-1-JodyDole-1.jpg">
+					</div>
+					<a href="#!user"><img class="circle" src="https://avatars3.githubusercontent.com/u/8071305"></a>
+					<a href="#!name"><span class="white-text name">Deep Sheth</span></a>
+					<a href="#!email"><span class="white-text email">deepsheth@lehigh.com</span></a>
+				</div></li>
+				<li><a href="profile.html"><i class="material-icons">history</i>Past Walks</a></li>
+				<li><a href="login.html"><i class="material-icons">account_circle</i>Log In</a></li>
+				<li><div class="divider"></div></li>
+				<li><a href="!#"><i class="material-icons"></i>Log Out</a></li>
+			</ul>
+			<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+		</div>
+	</nav>
+	
+	<div class="container">
+		<div class="section">
+			<div class="section">
+				<div class="center">
+					<div class="col s11 dyn_title_row">
+						<h3 class="dyn_title_text">
+						<div class="dyn_avatar">
+							<i class="material-icons tiny-icon circle green tiny white-text walk-icon">directions_walk</i>
+						</div>
+						Walk with <span class="dyn_username">[name]</span> to <span class="dyn_dest">[dest]</span>
+						</h3>
+					
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s12 center">
+						<h5><span class="dyn_time"><strong>December 12th, 2016</strong> at 10:45pm</span></h5>
+					</div>
+				</div>
+				<div class="row center">
+					<div class="section">
+						<div class="col s12">
+							<div id="mini-map">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row center">
+					<div class="col s12">
+						<a class="btn btn-large green white-text btn-flat" href="" class="dyn_chat">
+						<i class="material-icons left">message</i>View Messages with <span class="dyn_username">Adam</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+	var walk_id = window.location.href.split("?user=")[1];
+	
+
+	$(document).ready(function() {
+
+		var ref = firebase.database().ref('/past_walks/' + walk_id).once('value').then(function(snapshot) {
+			renderPage(snapshot.val());
+		});
+	});
+
+	
+	function renderPage(snap) {
+		$('.dyn_username').text(snap.poster_name);
+		$('.dyn_dest').text(snap.destination_name);
+		$('.dyn_time').text(snap.time);
+		$('.dyn_chat').text("/chat.html?w=" + snap.walk_id);
+
+	}
+	</script>
+	
+</div>
+</html>
